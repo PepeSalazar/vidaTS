@@ -6,7 +6,7 @@ import {ESTADO_CELULA} from "../modelos/EstadoCelula";
 
 @Component({
   selector : "universo",
-  template : `<canvas #universo)></canvas>`
+  template : `<canvas #universo)>Canvas</canvas>`
 })
 
 export class UniversoComponent implements AfterViewInit {
