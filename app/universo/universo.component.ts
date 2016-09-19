@@ -1,12 +1,12 @@
 import {Component, ViewChild, ElementRef, AfterViewInit} from "@angular/core";
 
-import {Mapa} from "app/modelos/Mapa";
-import {Celula} from "app/modelos/Celula";
-import {ESTADO_CELULA} from "app/modelos/EstadoCelula";
+import {Mapa} from "../modelos/Mapa";
+import {Celula} from "../modelos/Celula";
+import {ESTADO_CELULA} from "../modelos/EstadoCelula";
 
 @Component({
   selector : "universo",
-  template : `<canvas #universo)>Canvas normal</canvas>`
+  template : `<canvas #universo)></canvas>`
 })
 
 export class UniversoComponent implements AfterViewInit {
@@ -38,9 +38,9 @@ export class UniversoComponent implements AfterViewInit {
   }
 
   @ViewChild("universo") universo;
-
   ngAfterViewInit(){ // wait for the view to init before using the element
-    this.contexto = this.universo.nativeElement.getContext("2d");
+    let canvas = this.universo.nativeElement;
+    this.contexto = canvas.getContext("2d");
   }
 
   exterminarVida(){

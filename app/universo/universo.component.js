@@ -6,8 +6,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var core_1 = require("@angular/core");
-var Mapa_1 = require("app/modelos/Mapa");
-var EstadoCelula_1 = require("app/modelos/EstadoCelula");
+var Mapa_1 = require("../modelos/Mapa");
+var EstadoCelula_1 = require("../modelos/EstadoCelula");
 var UniversoComponent = (function () {
     // constructor(private renglones : number, private columnas : number, private tamCelulas : number, private espacioCelular : number, private porcentajeVida : number){
     //   this.renglones            = renglones;
@@ -30,7 +30,8 @@ var UniversoComponent = (function () {
         // this.contexto             = c.getContext("2d");
     }
     UniversoComponent.prototype.ngAfterViewInit = function () {
-        this.contexto = this.universo.nativeElement.getContext("2d");
+        var canvas = this.universo.nativeElement;
+        this.contexto = canvas.getContext("2d");
     };
     UniversoComponent.prototype.exterminarVida = function () {
         this.mapa.recorrer(function (celula) {
@@ -130,7 +131,7 @@ var UniversoComponent = (function () {
     UniversoComponent = __decorate([
         core_1.Component({
             selector: "universo",
-            template: "<canvas #universo class='universo')>NADNADNAD</canvas>"
+            template: "<canvas #universo)></canvas>"
         })
     ], UniversoComponent);
     return UniversoComponent;

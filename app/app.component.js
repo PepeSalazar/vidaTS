@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var core_1 = require("@angular/core");
 var AppComponent = (function () {
     function AppComponent() {
-        this.title = "Angular 2 tutorial 3";
+        this.title = "Angular 2 tutorial";
     }
     AppComponent = __decorate([
         core_1.Component({
