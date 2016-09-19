@@ -26,28 +26,23 @@ System.register(["@angular/core", "../modelos/Mapa", "../modelos/EstadoCelula"],
         execute: function() {
             UniversoComponent = (function () {
                 // constructor(private renglones : number, private columnas : number, private tamCelulas : number, private espacioCelular : number, private porcentajeVida : number){
-                //   this.renglones            = renglones;
-                //   this.columnas             = columnas;
-                //   this.tamCelulas           = tamCelulas;
-                //   this.espacioCelular       = espacioCelular;
-                //   this.porcentajeVida       = porcentajeVida;
                 function UniversoComponent() {
                     this.cantidadGeneraciones = 0;
                     this.cantidadColonias = 0;
-                    this.renglones = 100;
-                    this.columnas = 100;
+                    this.renglones = 20;
+                    this.columnas = 20;
                     this.tamCelulas = 4;
                     this.espacioCelular = 0;
                     this.porcentajeVida = 0.4;
-                    this.mapa = new Mapa_1.Mapa(100, 100, 4, 0.4);
-                    // let c : HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("universo");
-                    // c.width                   = this.columnas * this.tamCelulas;
-                    // c.height                  = this.renglones * this.tamCelulas;
-                    // this.contexto             = c.getContext("2d");
+                    this.mapa = new Mapa_1.Mapa(50, 50, 4, 0.4);
                 }
                 UniversoComponent.prototype.ngAfterViewInit = function () {
                     var canvas = this.universo.nativeElement;
+                    canvas.width = this.columnas * this.tamCelulas;
+                    canvas.height = this.renglones * this.tamCelulas;
                     this.contexto = canvas.getContext("2d");
+                    this.generarVida();
+                    this.tick();
                 };
                 UniversoComponent.prototype.exterminarVida = function () {
                     this.mapa.recorrer(function (celula) {
@@ -63,11 +58,16 @@ System.register(["@angular/core", "../modelos/Mapa", "../modelos/EstadoCelula"],
                         celula.setEstado(estado);
                     });
                 };
-                UniversoComponent.prototype.detectarColonia = function (celula, padre) {
-                    if (celula.getEstado() === EstadoCelula_1.ESTADO_CELULA.MUERTA) {
+                UniversoComponent.asignarColonia = function (celula, padre) {
+                    if (typeof padre !== 'undefined') {
+                        celula.setColonia(padre.getColonia());
                         return;
                     }
-                    if (celula.getColonia() >= -1) {
+                    var colonia = Math.floor(Math.random() * (255));
+                    celula.setColonia(colonia);
+                };
+                UniversoComponent.prototype.detectarColonia = function (celula, padre) {
+                    if (celula.getEstado() === EstadoCelula_1.ESTADO_CELULA.MUERTA) {
                         return;
                     }
                     UniversoComponent.asignarColonia(celula, padre);
@@ -78,13 +78,6 @@ System.register(["@angular/core", "../modelos/Mapa", "../modelos/EstadoCelula"],
                         }
                     });
                 };
-                UniversoComponent.asignarColonia = function (celula, padre) {
-                    if (typeof padre !== 'undefined') {
-                        celula.setColonia(padre.getColonia());
-                        return;
-                    }
-                    celula.setColonia(Math.random() * (255));
-                };
                 UniversoComponent.generarNumeroRandom = function (min, max) {
                     return Math.floor(Math.random() * (max - min + 1) + min);
                 };
@@ -93,26 +86,29 @@ System.register(["@angular/core", "../modelos/Mapa", "../modelos/EstadoCelula"],
                     this.mapa.recorrer(function (celula) {
                         var x = celula.getCoordenada().x * _this.tamCelulas; //Calcula la posición de la célula en el canvas.
                         var y = celula.getCoordenada().y * _this.tamCelulas;
-                        var x1 = _this.tamCelulas - _this.espacioCelular;
-                        var y1 = _this.tamCelulas - _this.espacioCelular;
-                        if (celula.getEstado() === EstadoCelula_1.ESTADO_CELULA.MUERTA) {
-                            _this.contexto.fillStyle = "#09C";
-                        }
-                        else if (celula.getEstado() === EstadoCelula_1.ESTADO_CELULA.VIVA) {
-                            var cadena = Math.floor(celula.getColonia()).toString(16);
-                            cadena = UniversoComponent.formatearCadena(cadena);
-                            if (cadena !== "00") {
-                                cadena = "#00CC" + cadena;
-                            }
-                            else {
-                                cadena = "#00CCFF";
-                            }
-                            _this.contexto.fillStyle = cadena;
-                        }
-                        _this.contexto.fillRect(x, y, x1, y1);
+                        var celulaWidth = _this.tamCelulas - _this.espacioCelular;
+                        var celulaHeight = _this.tamCelulas - _this.espacioCelular;
+                        _this.contexto.fillStyle = _this.seleccionarColor(celula);
+                        console.log("Color es : ", _this.seleccionarColor(celula));
+                        _this.contexto.fillRect(x, y, celulaWidth, celulaHeight);
                         if (celula.getColonia() !== -1) {
                         }
                     });
+                };
+                UniversoComponent.prototype.seleccionarColor = function (celula) {
+                    var estado = celula.getEstado();
+                    if (estado === EstadoCelula_1.ESTADO_CELULA.MUERTA) {
+                        return "#09C";
+                    }
+                    var cadena = Math.floor(celula.getColonia()).toString(16);
+                    cadena = UniversoComponent.formatearCadena(cadena);
+                    if (cadena !== "00") {
+                        cadena = "#00CC" + cadena;
+                    }
+                    else {
+                        cadena = "#00CCFF";
+                    }
+                    return cadena;
                 };
                 /**
                  * Verifica que la cadena tenga al menos dos caracteres.
@@ -132,12 +128,13 @@ System.register(["@angular/core", "../modelos/Mapa", "../modelos/EstadoCelula"],
                     this.mapa.recorrer(function (celula) {
                         var vecinos = _this.mapa.ContarVecinosVivos(celula);
                         celula.setFantasma(celula.calcularEstado(vecinos));
-                        celula.setColonia(-1); // Reinica la colonia
+                        // celula.setColonia(-1); // Reinica la colonia
+                        celula.setColonia(100); // Por de mientras ponemos la misma colonia, pues la recursion sucks.
                     });
                     this.mapa.recorrer(function (celula) {
                         celula.desfasar();
                     });
-                    this.mapa.recorrer(this.detectarColonia);
+                    // this.mapa.recorrer(this.detectarColonia);
                     this.generaciones = this.generaciones + 1;
                     this.pintarCambios();
                 };
@@ -148,7 +145,7 @@ System.register(["@angular/core", "../modelos/Mapa", "../modelos/EstadoCelula"],
                 UniversoComponent = __decorate([
                     core_1.Component({
                         selector: "universo",
-                        template: "<canvas #universo)>Canvas</canvas>"
+                        templateUrl: "app/universo/universo.component.html"
                     }), 
                     __metadata('design:paramtypes', [])
                 ], UniversoComponent);

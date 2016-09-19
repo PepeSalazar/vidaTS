@@ -5,8 +5,8 @@ import {Celula} from "../modelos/Celula";
 import {ESTADO_CELULA} from "../modelos/EstadoCelula";
 
 @Component({
-  selector : "universo",
-  template : `<canvas #universo)>Canvas</canvas>`
+  selector    : "universo",
+  templateUrl : "app/universo/universo.component.html"
 })
 
 export class UniversoComponent implements AfterViewInit {
@@ -17,30 +17,26 @@ export class UniversoComponent implements AfterViewInit {
   private contexto : CanvasRenderingContext2D;
   private generaciones : number;
 
-  private renglones : number      = 100;
-  private columnas : number       = 100;
+  private renglones : number      = 20;
+  private columnas : number       = 20;
   private tamCelulas : number     = 4;
   private espacioCelular : number = 0;
   private porcentajeVida : number = 0.4;
 
   // constructor(private renglones : number, private columnas : number, private tamCelulas : number, private espacioCelular : number, private porcentajeVida : number){
-  //   this.renglones            = renglones;
-  //   this.columnas             = columnas;
-  //   this.tamCelulas           = tamCelulas;
-  //   this.espacioCelular       = espacioCelular;
-  //   this.porcentajeVida       = porcentajeVida;
   constructor(){
-    this.mapa = new Mapa(100, 100, 4, 0.4);
-    // let c : HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("universo");
-    // c.width                   = this.columnas * this.tamCelulas;
-    // c.height                  = this.renglones * this.tamCelulas;
-    // this.contexto             = c.getContext("2d");
+    this.mapa = new Mapa(50, 50, 4, 0.4);
   }
 
   @ViewChild("universo") universo;
-  ngAfterViewInit(){ // wait for the view to init before using the element
-    let canvas = this.universo.nativeElement;
-    this.contexto = canvas.getContext("2d");
+
+  ngAfterViewInit(){
+    let canvas : HTMLCanvasElement = this.universo.nativeElement;
+    canvas.width                   = this.columnas * this.tamCelulas;
+    canvas.height                  = this.renglones * this.tamCelulas;
+    this.contexto                  = canvas.getContext("2d");
+    this.generarVida();
+    this.tick();
   }
 
   exterminarVida(){
@@ -53,17 +49,23 @@ export class UniversoComponent implements AfterViewInit {
     this.mapa.recorrer(function (celula : Celula){
       let estado = ESTADO_CELULA.VIVA;
       if(UniversoComponent.generarNumeroRandom(0, 1) === 0){
-        estado = ESTADO_CELULA.MUERTA
+        estado = ESTADO_CELULA.MUERTA;
       }
       celula.setEstado(estado);
     });
   }
 
-  detectarColonia(celula : Celula, padre : Celula){
-    if(celula.getEstado() === ESTADO_CELULA.MUERTA){
+  static asignarColonia(celula : Celula, padre : Celula) : void{
+    if(typeof padre !== 'undefined'){
+      celula.setColonia(padre.getColonia());
       return;
     }
-    if(celula.getColonia() >= -1){
+    let colonia = Math.floor(Math.random() * (255));
+    celula.setColonia(colonia);
+  }
+
+  detectarColonia(celula : Celula, padre : Celula){
+    if(celula.getEstado() === ESTADO_CELULA.MUERTA){
       return;
     }
     UniversoComponent.asignarColonia(celula, padre);
@@ -75,37 +77,20 @@ export class UniversoComponent implements AfterViewInit {
     })
   }
 
-  static asignarColonia(celula : Celula, padre : Celula) : void{
-    if(typeof padre !== 'undefined'){
-      celula.setColonia(padre.getColonia());
-      return;
-    }
-    celula.setColonia(Math.random() * (255));
-  }
-
   static generarNumeroRandom(min : number, max : number) : number{
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
   pintarCambios() : void{
     this.mapa.recorrer((celula : Celula) =>{
-      let x  = celula.getCoordenada().x * this.tamCelulas;//Calcula la posición de la célula en el canvas.
-      let y  = celula.getCoordenada().y * this.tamCelulas;
-      let x1 = this.tamCelulas - this.espacioCelular;
-      let y1 = this.tamCelulas - this.espacioCelular;
-      if(celula.getEstado() === ESTADO_CELULA.MUERTA){//Varía el colo de la célula de acuerdo a su estado.
-        this.contexto.fillStyle = "#09C";
-      } else if(celula.getEstado() === ESTADO_CELULA.VIVA){
-        let cadena : string = Math.floor(celula.getColonia()).toString(16);
-        cadena              = UniversoComponent.formatearCadena(cadena);
-        if(cadena !== "00"){
-          cadena = "#00CC" + cadena;
-        } else {
-          cadena = "#00CCFF";
-        }
-        this.contexto.fillStyle = cadena;
-      }
-      this.contexto.fillRect(x, y, x1, y1);
+      let x : number            = celula.getCoordenada().x * this.tamCelulas;//Calcula la posición de la célula en el canvas.
+      let y : number            = celula.getCoordenada().y * this.tamCelulas;
+      let celulaWidth : number  = this.tamCelulas - this.espacioCelular;
+      let celulaHeight : number = this.tamCelulas - this.espacioCelular;
+
+      this.contexto.fillStyle = this.seleccionarColor(celula);
+      console.log("Color es : ", this.seleccionarColor(celula));
+      this.contexto.fillRect(x, y, celulaWidth, celulaHeight);
       if(celula.getColonia() !== -1){//Lo uso para desplegar información acerca de la célula.
         //console.log("Se pinta la célula:" + JSON.stringify(celula));
         //ctx.fillStyle = "#000";
@@ -113,6 +98,21 @@ export class UniversoComponent implements AfterViewInit {
         //ctx.fillText(celula.colonia, (x + tamCelulas / 2), (y + tamCelulas / 2));
       }
     })
+  }
+
+  seleccionarColor(celula : Celula) : string{
+    let estado = celula.getEstado();
+
+    if(estado === ESTADO_CELULA.MUERTA){ return "#09C"; }
+
+    let cadena : string = Math.floor(celula.getColonia()).toString(16);
+    cadena              = UniversoComponent.formatearCadena(cadena);
+    if(cadena !== "00"){
+      cadena = "#00CC" + cadena;
+    } else {
+      cadena = "#00CCFF";
+    }
+    return cadena;
   }
 
   /**
@@ -133,12 +133,13 @@ export class UniversoComponent implements AfterViewInit {
     this.mapa.recorrer((celula : Celula)=>{
       let vecinos = this.mapa.ContarVecinosVivos(celula);
       celula.setFantasma(celula.calcularEstado(vecinos));
-      celula.setColonia(-1); // Reinica la colonia
+      // celula.setColonia(-1); // Reinica la colonia
+      celula.setColonia(100); // Por de mientras ponemos la misma colonia, pues la recursion sucks.
     });
     this.mapa.recorrer(function (celula : Celula){
       celula.desfasar();
     });
-    this.mapa.recorrer(this.detectarColonia);
+    // this.mapa.recorrer(this.detectarColonia);
     this.generaciones = this.generaciones + 1;
     this.pintarCambios();
   }

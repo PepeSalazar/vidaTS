@@ -34,20 +34,27 @@ System.register(["./Celula", "./Coordenada", "./EstadoCelula"], function(exports
                         this.celulas[x] = new Array(this.columnas);
                         for (var y = 0; y < this.columnas; y++) {
                             var identificador = ((x * this.columnas) + y);
-                            this.celulas[x][y] = new Celula_1.Celula(identificador, new Coordenada_1.Coordenada(x, y), EstadoCelula_1.ESTADO_CELULA.MUERTA, -1);
+                            var celula = new Celula_1.Celula(identificador, new Coordenada_1.Coordenada(x, y), EstadoCelula_1.ESTADO_CELULA.MUERTA, -1);
+                            this.celulas[x][y] = celula;
                         }
                     }
                 }
+                Mapa.prototype.enElMapa = function (x, y) {
+                    return !!(x >= 0 && y >= 0 && x < this.renglones && y < this.columnas);
+                };
                 Mapa.prototype.getCelula = function (x, y) {
-                    var celula = this.celulas[x][y];
-                    if (!celula) {
-                        return new Celula_1.Celula();
+                    var celula;
+                    var existe = this.enElMapa(x, y);
+                    if (existe) {
+                        celula = this.celulas[x][y];
+                    }
+                    else {
+                        celula = new Celula_1.Celula();
                     }
                     return celula;
                 };
                 Mapa.prototype.recorrer = function (funcion) {
                     for (var i = 0; i < this.renglones; i++) {
-                        this.celulas[i] = [];
                         for (var j = 0; j < this.columnas; j++) {
                             funcion(this.celulas[i][j]);
                         }
@@ -60,15 +67,14 @@ System.register(["./Celula", "./Coordenada", "./EstadoCelula"], function(exports
                 Mapa.prototype.obtenerCelulasVecinas = function (celula) {
                     var vecinos = [];
                     var coordenada = celula.getCoordenada();
-                    var getCelula = this.getCelula;
-                    vecinos.push(getCelula(coordenada.x - 1, coordenada.y - 1));
-                    vecinos.push(getCelula(coordenada.x - 1, coordenada.y));
-                    vecinos.push(getCelula(coordenada.x - 1, coordenada.y + 1));
-                    vecinos.push(getCelula(coordenada.x, coordenada.y - 1));
-                    vecinos.push(getCelula(coordenada.x, coordenada.y + 1));
-                    vecinos.push(getCelula(coordenada.x + 1, coordenada.y - 1));
-                    vecinos.push(getCelula(coordenada.x + 1, coordenada.y));
-                    vecinos.push(getCelula(coordenada.x + 1, coordenada.y + 1));
+                    vecinos.push(this.getCelula(coordenada.x - 1, coordenada.y - 1));
+                    vecinos.push(this.getCelula(coordenada.x - 1, coordenada.y));
+                    vecinos.push(this.getCelula(coordenada.x - 1, coordenada.y + 1));
+                    vecinos.push(this.getCelula(coordenada.x, coordenada.y - 1));
+                    vecinos.push(this.getCelula(coordenada.x, coordenada.y + 1));
+                    vecinos.push(this.getCelula(coordenada.x + 1, coordenada.y - 1));
+                    vecinos.push(this.getCelula(coordenada.x + 1, coordenada.y));
+                    vecinos.push(this.getCelula(coordenada.x + 1, coordenada.y + 1));
                     return vecinos;
                 };
                 Mapa.prototype.ContarVecinosVivos = function (celula) {

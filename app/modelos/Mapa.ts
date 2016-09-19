@@ -14,28 +14,35 @@ export class Mapa {
     this.tamanoCelula   = tamanoCelula;
     this.porcentajeVida = porcentajeVida;
 
-    this.celulas =  new Array(this.renglones);
+    this.celulas = new Array(this.renglones);
 
     for (let x : number = 0; x < this.renglones; x++){
       this.celulas[x] = new Array(this.columnas);
       for (let y : number = 0; y < this.columnas; y++){
         let identificador  = ((x * this.columnas) + y);
-        this.celulas[x][y] = new Celula(identificador, new Coordenada(x, y), ESTADO_CELULA.MUERTA, -1);
+        let celula         = new Celula(identificador, new Coordenada(x, y), ESTADO_CELULA.MUERTA, -1);
+        this.celulas[x][y] = celula;
       }
     }
   }
 
+  enElMapa(x : number, y : number) : boolean{
+    return !!(x >= 0 && y >= 0 && x < this.renglones && y < this.columnas);
+  }
+
   getCelula(x : number, y : number) : Celula{
-    let celula = this.celulas[x][y];
-    if(!celula){
-      return new Celula();
+    let celula : Celula;
+    let existe = this.enElMapa(x, y);
+    if(existe){
+      celula = this.celulas[x][y];
+    } else {
+      celula = new Celula();
     }
     return celula;
   }
 
   recorrer(funcion : Function){
     for (let i : number = 0; i < this.renglones; i++){
-      this.celulas[i] = [];
       for (let j : number = 0; j < this.columnas; j++){
         funcion(this.celulas[i][j]);
       }
@@ -50,15 +57,14 @@ export class Mapa {
   obtenerCelulasVecinas(celula : Celula){
     let vecinos : Celula []     = [];
     let coordenada : Coordenada = celula.getCoordenada();
-    let getCelula               = this.getCelula;
-    vecinos.push(getCelula(coordenada.x - 1, coordenada.y - 1));
-    vecinos.push(getCelula(coordenada.x - 1, coordenada.y));
-    vecinos.push(getCelula(coordenada.x - 1, coordenada.y + 1));
-    vecinos.push(getCelula(coordenada.x, coordenada.y - 1));
-    vecinos.push(getCelula(coordenada.x, coordenada.y + 1));
-    vecinos.push(getCelula(coordenada.x + 1, coordenada.y - 1));
-    vecinos.push(getCelula(coordenada.x + 1, coordenada.y));
-    vecinos.push(getCelula(coordenada.x + 1, coordenada.y + 1));
+    vecinos.push(this.getCelula(coordenada.x - 1, coordenada.y - 1));
+    vecinos.push(this.getCelula(coordenada.x - 1, coordenada.y));
+    vecinos.push(this.getCelula(coordenada.x - 1, coordenada.y + 1));
+    vecinos.push(this.getCelula(coordenada.x, coordenada.y - 1));
+    vecinos.push(this.getCelula(coordenada.x, coordenada.y + 1));
+    vecinos.push(this.getCelula(coordenada.x + 1, coordenada.y - 1));
+    vecinos.push(this.getCelula(coordenada.x + 1, coordenada.y));
+    vecinos.push(this.getCelula(coordenada.x + 1, coordenada.y + 1));
     return vecinos;
   }
 
