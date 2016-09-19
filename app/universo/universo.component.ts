@@ -1,5 +1,4 @@
-import {Component, OnInit} from "@angular/core";
-import {ViewChild} from "@angular/core";
+import {Component, ViewChild, ElementRef, AfterViewInit} from "@angular/core";
 
 import {Mapa} from "app/modelos/Mapa";
 import {Celula} from "app/modelos/Celula";
@@ -7,15 +6,16 @@ import {ESTADO_CELULA} from "app/modelos/EstadoCelula";
 
 @Component({
   selector : "universo",
-  template : "<canvas #universo)>NADNADNAD</canvas>"
+  template : `<canvas #universo class='universo')>NADNADNAD</canvas>`
 })
 
-export class UniversoComponent implements OnInit{
-  @ViewChild("universo") universo;
+export class UniversoComponent implements AfterViewInit {
+
+  private contexto : CanvasRenderingContext2D;
   private mapa : Mapa;
   private cantidadGeneraciones : number = 0;
   private cantidadColonias : number     = 0;
-  private contexto;
+  private contexto : CanvasRenderingContext2D;
   private generaciones : number;
 
   private renglones : number      = 100;
@@ -31,17 +31,17 @@ export class UniversoComponent implements OnInit{
   //   this.espacioCelular       = espacioCelular;
   //   this.porcentajeVida       = porcentajeVida;
   constructor(){
-    this.mapa                 = new Mapa(100, 100, 4, 0.4);
+    this.mapa = new Mapa(100, 100, 4, 0.4);
     // let c : HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("universo");
     // c.width                   = this.columnas * this.tamCelulas;
     // c.height                  = this.renglones * this.tamCelulas;
     // this.contexto             = c.getContext("2d");
   }
 
-  ngAfterViewChecked() {
-    // let canvas = this.universo.nativeElement;
-    let canvas = <HTMLCanvasElement> document.getElementById("universo");
-    this.contexto = canvas.getContext("2d");
+  @ViewChild("universo") universo;
+
+  ngAfterViewInit(){ // wait for the view to init before using the element
+    this.contexto = this.universo.nativeElement.getContext("2d");
   }
 
   exterminarVida(){
