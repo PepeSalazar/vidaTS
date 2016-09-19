@@ -6,12 +6,11 @@ import {ESTADO_CELULA} from "app/modelos/EstadoCelula";
 
 @Component({
   selector : "universo",
-  template : `<canvas #universo class='universo')>NADNADNAD</canvas>`
+  template : `<canvas #universo)>Canvas normal</canvas>`
 })
 
 export class UniversoComponent implements AfterViewInit {
 
-  private contexto : CanvasRenderingContext2D;
   private mapa : Mapa;
   private cantidadGeneraciones : number = 0;
   private cantidadColonias : number     = 0;
