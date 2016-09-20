@@ -62,7 +62,7 @@ System.register(["./Celula", "./Coordenada", "./EstadoCelula"], function(exports
                 };
                 //Si es célula vecina válida y viva, y no su padre.
                 Mapa.prototype.esCelulaVecinaValida = function (celula, padre) {
-                    return celula.getId() !== -1 && celula.getEstado() === EstadoCelula_1.ESTADO_CELULA.VIVA && celula.isEqual(padre);
+                    return celula.getId() !== -1 && celula.getEstado() === EstadoCelula_1.ESTADO_CELULA.VIVA && !celula.isEqual(padre);
                 };
                 Mapa.prototype.obtenerCelulasVecinas = function (celula) {
                     var vecinos = [];

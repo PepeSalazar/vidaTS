@@ -51,7 +51,7 @@ export class Mapa {
 
   //Si es célula vecina válida y viva, y no su padre.
   esCelulaVecinaValida(celula : Celula, padre : Celula){
-    return celula.getId() !== -1 && celula.getEstado() === ESTADO_CELULA.VIVA && celula.isEqual(padre);
+    return celula.getId() !== -1 && celula.getEstado() === ESTADO_CELULA.VIVA && !celula.isEqual(padre);
   }
 
   obtenerCelulasVecinas(celula : Celula){

@@ -29,12 +29,13 @@ System.register(["@angular/core", "../modelos/Mapa", "../modelos/EstadoCelula"],
                 function UniversoComponent() {
                     this.cantidadGeneraciones = 0;
                     this.cantidadColonias = 0;
-                    this.renglones = 20;
-                    this.columnas = 20;
-                    this.tamCelulas = 4;
+                    this.renglones = 5;
+                    this.columnas = 5;
+                    this.tamCelulas = 30;
                     this.espacioCelular = 0;
                     this.porcentajeVida = 0.4;
-                    this.mapa = new Mapa_1.Mapa(50, 50, 4, 0.4);
+                    this.mapa = new Mapa_1.Mapa(this.renglones, this.columnas, this.tamCelulas, this.porcentajeVida);
+                    console.log("This mapa is: ", this.renglones, this.columnas);
                 }
                 UniversoComponent.prototype.ngAfterViewInit = function () {
                     var canvas = this.universo.nativeElement;
@@ -59,6 +60,7 @@ System.register(["@angular/core", "../modelos/Mapa", "../modelos/EstadoCelula"],
                     });
                 };
                 UniversoComponent.asignarColonia = function (celula, padre) {
+                    console.log("Asignando: ", celula, padre);
                     if (typeof padre !== 'undefined') {
                         celula.setColonia(padre.getColonia());
                         return;
@@ -67,14 +69,15 @@ System.register(["@angular/core", "../modelos/Mapa", "../modelos/EstadoCelula"],
                     celula.setColonia(colonia);
                 };
                 UniversoComponent.prototype.detectarColonia = function (celula, padre) {
+                    var self = this;
+                    var vecinas;
                     if (celula.getEstado() === EstadoCelula_1.ESTADO_CELULA.MUERTA) {
                         return;
                     }
                     UniversoComponent.asignarColonia(celula, padre);
-                    var vecinas = this.mapa.obtenerCelulasVecinas(celula);
+                    vecinas = self.mapa.obtenerCelulasVecinas(celula);
                     vecinas.forEach(function (vecina, index, array) {
-                        if (this.esCelulaVecinaValida(vecina, padre)) {
-                            this.detectarColonia(vecina, celula);
+                        if (self.mapa.esCelulaVecinaValida(vecina, celula)) {
                         }
                     });
                 };
@@ -89,8 +92,10 @@ System.register(["@angular/core", "../modelos/Mapa", "../modelos/EstadoCelula"],
                         var celulaWidth = _this.tamCelulas - _this.espacioCelular;
                         var celulaHeight = _this.tamCelulas - _this.espacioCelular;
                         _this.contexto.fillStyle = _this.seleccionarColor(celula);
-                        console.log("Color es : ", _this.seleccionarColor(celula));
                         _this.contexto.fillRect(x, y, celulaWidth, celulaHeight);
+                        _this.contexto.fillStyle = "#000";
+                        _this.contexto.font = "10px Arial";
+                        _this.contexto.fillText(celula.getId().toString(), (x + _this.tamCelulas / 2), (y + _this.tamCelulas / 2));
                         if (celula.getColonia() !== -1) {
                         }
                     });
@@ -128,13 +133,12 @@ System.register(["@angular/core", "../modelos/Mapa", "../modelos/EstadoCelula"],
                     this.mapa.recorrer(function (celula) {
                         var vecinos = _this.mapa.ContarVecinosVivos(celula);
                         celula.setFantasma(celula.calcularEstado(vecinos));
-                        // celula.setColonia(-1); // Reinica la colonia
-                        celula.setColonia(100); // Por de mientras ponemos la misma colonia, pues la recursion sucks.
+                        celula.setColonia(-1); // Reinica la colonia
                     });
                     this.mapa.recorrer(function (celula) {
                         celula.desfasar();
                     });
-                    // this.mapa.recorrer(this.detectarColonia);
+                    this.mapa.recorrer(this.detectarColonia.bind(this));
                     this.generaciones = this.generaciones + 1;
                     this.pintarCambios();
                 };

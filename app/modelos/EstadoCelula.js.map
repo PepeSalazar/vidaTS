@@ -1,1 +1,1 @@
-{"version":3,"file":"EstadoCelula.js","sourceRoot":"","sources":["EstadoCelula.ts"],"names":[],"mappings":";;;;;;;YAAA,WAAY,aAAa;gBACvB,iDAAI,CAAA;gBACJ,qDAAM,CAAA;YACR,CAAC,EAHW,aAAa,KAAb,aAAa,QAGxB;sDAAA"}
+{"version":3,"file":"EstadoCelula.js","sourceRoot":"","sources":["EstadoCelula.ts"],"names":[],"mappings":";;;;;;;YAAA,WAAY,aAAa;gBACvB,qDAAM,CAAA;gBACN,iDAAI,CAAA;YACN,CAAC,EAHW,aAAa,KAAb,aAAa,QAGxB;sDAAA"}
