@@ -25,7 +25,7 @@ System.register(["@angular/core"], function(exports_1, context_1) {
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: "my-app",
-                        template: "<h1>{{title}}</h1><universo></universo>"
+                        template: "<h1>{{title}}</h1>\n                <controles (ticked)=\"uni.tick()\"></controles>\n                <universo #uni></universo>",
                     }), 
                     __metadata('design:paramtypes', [])
                 ], AppComponent);

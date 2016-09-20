@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/platform-browser', '@angular/forms', './app.component', './universo/universo.component'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/platform-browser', '@angular/forms', './app.component', './universo/universo.component', './controles/controles.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/platform-browser', '@angular/forms',
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, platform_browser_1, forms_1, app_component_1, universo_component_1;
+    var core_1, platform_browser_1, forms_1, app_component_1, universo_component_1, controles_component_1;
     var AppModule;
     return {
         setters:[
@@ -28,6 +28,9 @@ System.register(['@angular/core', '@angular/platform-browser', '@angular/forms',
             },
             function (universo_component_1_1) {
                 universo_component_1 = universo_component_1_1;
+            },
+            function (controles_component_1_1) {
+                controles_component_1 = controles_component_1_1;
             }],
         execute: function() {
             AppModule = (function () {
@@ -40,7 +43,7 @@ System.register(['@angular/core', '@angular/platform-browser', '@angular/forms',
                             forms_1.FormsModule
                         ],
                         declarations: [
-                            app_component_1.AppComponent, universo_component_1.UniversoComponent
+                            app_component_1.AppComponent, universo_component_1.UniversoComponent, controles_component_1.ControlesComponent
                         ],
                         bootstrap: [app_component_1.AppComponent]
                     }), 

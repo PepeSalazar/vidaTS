@@ -29,8 +29,8 @@ System.register(["@angular/core", "../modelos/Mapa", "../modelos/EstadoCelula"],
                 function UniversoComponent() {
                     this.cantidadGeneraciones = 0;
                     this.cantidadColonias = 0;
-                    this.renglones = 30;
-                    this.columnas = 30;
+                    this.renglones = 100;
+                    this.columnas = 100;
                     this.tamCelulas = 4;
                     this.espacioCelular = 0;
                     this.porcentajeVida = 0.4;

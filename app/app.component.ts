@@ -1,8 +1,10 @@
 import {Component} from "@angular/core";
 
 @Component({
-  selector : "my-app",
-  template : "<h1>{{title}}</h1><universo></universo>"
+  selector   : "my-app",
+  template   : `<h1>{{title}}</h1>
+                <controles (ticked)="uni.tick()"></controles>
+                <universo #uni></universo>`,
 })
 
 export class AppComponent {

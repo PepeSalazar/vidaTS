@@ -4,6 +4,7 @@ import {FormsModule}   from '@angular/forms';
 
 import {AppComponent}  from './app.component';
 import {UniversoComponent}  from './universo/universo.component';
+import {ControlesComponent} from './controles/controles.component'
 
 @NgModule({
   imports      : [
@@ -11,7 +12,7 @@ import {UniversoComponent}  from './universo/universo.component';
     FormsModule
   ],
   declarations : [
-    AppComponent, UniversoComponent
+    AppComponent, UniversoComponent, ControlesComponent
   ],
   bootstrap    : [AppComponent]
 })

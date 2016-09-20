@@ -1,4 +1,4 @@
-import {Component, ViewChild, ElementRef, AfterViewInit} from "@angular/core";
+import {Component, ViewChild, AfterViewInit} from "@angular/core";
 
 import {Mapa} from "../modelos/Mapa";
 import {Celula} from "../modelos/Celula";
@@ -17,8 +17,8 @@ export class UniversoComponent implements AfterViewInit {
   private contexto : CanvasRenderingContext2D;
   private generaciones : number;
 
-  private renglones : number      = 30;
-  private columnas : number       = 30;
+  private renglones : number      = 100;
+  private columnas : number       = 100;
   private tamCelulas : number     = 4;
   private espacioCelular : number = 0;
   private porcentajeVida : number = 0.4;
