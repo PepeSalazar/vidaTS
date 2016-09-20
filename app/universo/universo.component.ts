@@ -17,8 +17,8 @@ export class UniversoComponent implements AfterViewInit {
   private contexto : CanvasRenderingContext2D;
   private generaciones : number;
 
-  private renglones : number      = 100;
-  private columnas : number       = 100;
+  private renglones : number      = 200;
+  private columnas : number       = 200;
   private tamCelulas : number     = 4;
   private espacioCelular : number = 0;
   private porcentajeVida : number = 0.4;
@@ -31,7 +31,7 @@ export class UniversoComponent implements AfterViewInit {
 
   @ViewChild("universo") universo;
 
-  ngAfterViewInit(){
+  ngAfterViewInit() : void{
     let canvas : HTMLCanvasElement = this.universo.nativeElement;
     canvas.width                   = this.columnas * this.tamCelulas;
     canvas.height                  = this.renglones * this.tamCelulas;
@@ -40,13 +40,13 @@ export class UniversoComponent implements AfterViewInit {
     this.tick();
   }
 
-  exterminarVida(){
+  exterminarVida() : void{
     this.mapa.recorrer((celula : Celula) =>{
       celula.setEstado(ESTADO_CELULA.MUERTA);
     });
   }
 
-  generarVida(){
+  generarVida() : void{
     this.mapa.recorrer(function (celula : Celula){
       let estado = ESTADO_CELULA.VIVA;
       if(UniversoComponent.generarNumeroRandom(0, 1) === 0){
@@ -65,7 +65,7 @@ export class UniversoComponent implements AfterViewInit {
     celula.setColonia(colonia);
   }
 
-  detectarColonia(celula : Celula, padre : Celula){
+  detectarColonia(celula : Celula, padre : Celula) : void{
     let self = this;
     let vecinas : Celula[];
     if(celula.getColonia() !== -1){ return; }
@@ -94,7 +94,7 @@ export class UniversoComponent implements AfterViewInit {
     })
   }
 
-  pintarCelula(celula : Celula){
+  pintarCelula(celula : Celula) : void{
     let x : number            = celula.getCoordenada().x * this.tamCelulas;//Calcula la posición de la célula en el canvas.
     let y : number            = celula.getCoordenada().y * this.tamCelulas;
     let celulaWidth : number  = this.tamCelulas - this.espacioCelular;
@@ -129,7 +129,7 @@ export class UniversoComponent implements AfterViewInit {
    * @param cadena
    * @returns {string}
    */
-  static formatearCadena(cadena : string){
+  static formatearCadena(cadena : string) : string{
     let cadenaFormateada = cadena;
     if(cadena.length < 2){
       cadenaFormateada = "0" + cadena;
@@ -150,6 +150,24 @@ export class UniversoComponent implements AfterViewInit {
     this.mapa.recorrer(this.detectarColonia.bind(this));
     this.generaciones = this.generaciones + 1;
     this.pintarCambios();
+  }
+
+  controlesHandler($event){
+    let self = this;
+    console.log("Received: ", $event);
+
+    switch ($event){
+      case "tick" :
+        self.tick();
+        break;
+      case "exterminio" :
+        this.exterminarVida();
+        this.generarVida();
+        this.tick();
+        break;
+      default :
+        console.log("No");
+    }
   }
 
 }

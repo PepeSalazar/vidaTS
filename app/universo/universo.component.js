@@ -29,8 +29,8 @@ System.register(["@angular/core", "../modelos/Mapa", "../modelos/EstadoCelula"],
                 function UniversoComponent() {
                     this.cantidadGeneraciones = 0;
                     this.cantidadColonias = 0;
-                    this.renglones = 100;
-                    this.columnas = 100;
+                    this.renglones = 200;
+                    this.columnas = 200;
                     this.tamCelulas = 4;
                     this.espacioCelular = 0;
                     this.porcentajeVida = 0.4;
@@ -149,6 +149,22 @@ System.register(["@angular/core", "../modelos/Mapa", "../modelos/EstadoCelula"],
                     this.mapa.recorrer(this.detectarColonia.bind(this));
                     this.generaciones = this.generaciones + 1;
                     this.pintarCambios();
+                };
+                UniversoComponent.prototype.controlesHandler = function ($event) {
+                    var self = this;
+                    console.log("Received: ", $event);
+                    switch ($event) {
+                        case "tick":
+                            self.tick();
+                            break;
+                        case "exterminio":
+                            this.exterminarVida();
+                            this.generarVida();
+                            this.tick();
+                            break;
+                        default:
+                            console.log("No");
+                    }
                 };
                 __decorate([
                     core_1.ViewChild("universo"), 
