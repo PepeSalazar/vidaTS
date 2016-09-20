@@ -17,9 +17,9 @@ export class UniversoComponent implements AfterViewInit {
   private contexto : CanvasRenderingContext2D;
   private generaciones : number;
 
-  private renglones : number      = 5;
-  private columnas : number       = 5;
-  private tamCelulas : number     = 30;
+  private renglones : number      = 30;
+  private columnas : number       = 30;
+  private tamCelulas : number     = 4;
   private espacioCelular : number = 0;
   private porcentajeVida : number = 0.4;
 
@@ -57,8 +57,7 @@ export class UniversoComponent implements AfterViewInit {
   }
 
   static asignarColonia(celula : Celula, padre : Celula) : void{
-    console.log("Asignando: ", celula, padre);
-    if(typeof padre !== 'undefined'){
+    if(padre){
       celula.setColonia(padre.getColonia());
       return;
     }
@@ -69,6 +68,7 @@ export class UniversoComponent implements AfterViewInit {
   detectarColonia(celula : Celula, padre : Celula){
     let self = this;
     let vecinas : Celula[];
+    if(celula.getColonia() !== -1){ return; }
     if(celula.getEstado() === ESTADO_CELULA.MUERTA){
       return;
     }
@@ -76,10 +76,12 @@ export class UniversoComponent implements AfterViewInit {
     UniversoComponent.asignarColonia(celula, padre);
     vecinas = self.mapa.obtenerCelulasVecinas(celula);
     vecinas.forEach(function (vecina, index, array){
-      if(self.mapa.esCelulaVecinaValida(vecina, celula)){
-        // self.detectarColonia(vecina, celula);
+      let esValida = Mapa.esCelulaVecinaValida(vecina, padre);
+      if(esValida){
+        self.detectarColonia(vecina, celula);
       }
-    })
+    });
+
   }
 
   static generarNumeroRandom(min : number, max : number) : number{
@@ -88,31 +90,29 @@ export class UniversoComponent implements AfterViewInit {
 
   pintarCambios() : void{
     this.mapa.recorrer((celula : Celula) =>{
-      let x : number            = celula.getCoordenada().x * this.tamCelulas;//Calcula la posición de la célula en el canvas.
-      let y : number            = celula.getCoordenada().y * this.tamCelulas;
-      let celulaWidth : number  = this.tamCelulas - this.espacioCelular;
-      let celulaHeight : number = this.tamCelulas - this.espacioCelular;
-
-      this.contexto.fillStyle = this.seleccionarColor(celula);
-      this.contexto.fillRect(x, y, celulaWidth, celulaHeight);
-
-      this.contexto.fillStyle = "#000";
-      this.contexto.font      = "10px Arial";
-      this.contexto.fillText(celula.getId().toString(), (x + this.tamCelulas / 2), (y + this.tamCelulas / 2));
-
-      if(celula.getColonia() !== -1){//Lo uso para desplegar información acerca de la célula.
-        //console.log("Se pinta la célula:" + JSON.stringify(celula));
-        //ctx.fillStyle = "#000";
-        //ctx.font = "10px Arial";
-        //ctx.fillText(celula.colonia, (x + tamCelulas / 2), (y + tamCelulas / 2));
-      }
+      this.pintarCelula(celula);
     })
+  }
+
+  pintarCelula(celula : Celula){
+    let x : number            = celula.getCoordenada().x * this.tamCelulas;//Calcula la posición de la célula en el canvas.
+    let y : number            = celula.getCoordenada().y * this.tamCelulas;
+    let celulaWidth : number  = this.tamCelulas - this.espacioCelular;
+    let celulaHeight : number = this.tamCelulas - this.espacioCelular;
+
+    this.contexto.fillStyle = this.seleccionarColor(celula);
+    this.contexto.fillRect(x, y, celulaWidth, celulaHeight);
+
+    // this.contexto.fillStyle = "#000";
+    // this.contexto.font      = "10px Arial";
+    // this.contexto.fillText(celula.getId().toString(), (x + this.tamCelulas / 2), (y + this.tamCelulas / 2));
   }
 
   seleccionarColor(celula : Celula) : string{
     let estado = celula.getEstado();
 
     if(estado === ESTADO_CELULA.MUERTA){ return "#09C"; }
+    if(estado === ESTADO_CELULA.SELECCIONADA){ return "#FF0"; }
 
     let cadena : string = Math.floor(celula.getColonia()).toString(16);
     cadena              = UniversoComponent.formatearCadena(cadena);

@@ -8,6 +8,7 @@ System.register([], function(exports_1, context_1) {
             (function (ESTADO_CELULA) {
                 ESTADO_CELULA[ESTADO_CELULA["MUERTA"] = 0] = "MUERTA";
                 ESTADO_CELULA[ESTADO_CELULA["VIVA"] = 1] = "VIVA";
+                ESTADO_CELULA[ESTADO_CELULA["SELECCIONADA"] = 2] = "SELECCIONADA";
             })(ESTADO_CELULA || (ESTADO_CELULA = {}));
             exports_1("ESTADO_CELULA", ESTADO_CELULA);
         }

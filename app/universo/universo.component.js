@@ -29,9 +29,9 @@ System.register(["@angular/core", "../modelos/Mapa", "../modelos/EstadoCelula"],
                 function UniversoComponent() {
                     this.cantidadGeneraciones = 0;
                     this.cantidadColonias = 0;
-                    this.renglones = 5;
-                    this.columnas = 5;
-                    this.tamCelulas = 30;
+                    this.renglones = 30;
+                    this.columnas = 30;
+                    this.tamCelulas = 4;
                     this.espacioCelular = 0;
                     this.porcentajeVida = 0.4;
                     this.mapa = new Mapa_1.Mapa(this.renglones, this.columnas, this.tamCelulas, this.porcentajeVida);
@@ -60,8 +60,7 @@ System.register(["@angular/core", "../modelos/Mapa", "../modelos/EstadoCelula"],
                     });
                 };
                 UniversoComponent.asignarColonia = function (celula, padre) {
-                    console.log("Asignando: ", celula, padre);
-                    if (typeof padre !== 'undefined') {
+                    if (padre) {
                         celula.setColonia(padre.getColonia());
                         return;
                     }
@@ -71,13 +70,18 @@ System.register(["@angular/core", "../modelos/Mapa", "../modelos/EstadoCelula"],
                 UniversoComponent.prototype.detectarColonia = function (celula, padre) {
                     var self = this;
                     var vecinas;
+                    if (celula.getColonia() !== -1) {
+                        return;
+                    }
                     if (celula.getEstado() === EstadoCelula_1.ESTADO_CELULA.MUERTA) {
                         return;
                     }
                     UniversoComponent.asignarColonia(celula, padre);
                     vecinas = self.mapa.obtenerCelulasVecinas(celula);
                     vecinas.forEach(function (vecina, index, array) {
-                        if (self.mapa.esCelulaVecinaValida(vecina, celula)) {
+                        var esValida = Mapa_1.Mapa.esCelulaVecinaValida(vecina, padre);
+                        if (esValida) {
+                            self.detectarColonia(vecina, celula);
                         }
                     });
                 };
@@ -87,23 +91,27 @@ System.register(["@angular/core", "../modelos/Mapa", "../modelos/EstadoCelula"],
                 UniversoComponent.prototype.pintarCambios = function () {
                     var _this = this;
                     this.mapa.recorrer(function (celula) {
-                        var x = celula.getCoordenada().x * _this.tamCelulas; //Calcula la posición de la célula en el canvas.
-                        var y = celula.getCoordenada().y * _this.tamCelulas;
-                        var celulaWidth = _this.tamCelulas - _this.espacioCelular;
-                        var celulaHeight = _this.tamCelulas - _this.espacioCelular;
-                        _this.contexto.fillStyle = _this.seleccionarColor(celula);
-                        _this.contexto.fillRect(x, y, celulaWidth, celulaHeight);
-                        _this.contexto.fillStyle = "#000";
-                        _this.contexto.font = "10px Arial";
-                        _this.contexto.fillText(celula.getId().toString(), (x + _this.tamCelulas / 2), (y + _this.tamCelulas / 2));
-                        if (celula.getColonia() !== -1) {
-                        }
+                        _this.pintarCelula(celula);
                     });
+                };
+                UniversoComponent.prototype.pintarCelula = function (celula) {
+                    var x = celula.getCoordenada().x * this.tamCelulas; //Calcula la posición de la célula en el canvas.
+                    var y = celula.getCoordenada().y * this.tamCelulas;
+                    var celulaWidth = this.tamCelulas - this.espacioCelular;
+                    var celulaHeight = this.tamCelulas - this.espacioCelular;
+                    this.contexto.fillStyle = this.seleccionarColor(celula);
+                    this.contexto.fillRect(x, y, celulaWidth, celulaHeight);
+                    // this.contexto.fillStyle = "#000";
+                    // this.contexto.font      = "10px Arial";
+                    // this.contexto.fillText(celula.getId().toString(), (x + this.tamCelulas / 2), (y + this.tamCelulas / 2));
                 };
                 UniversoComponent.prototype.seleccionarColor = function (celula) {
                     var estado = celula.getEstado();
                     if (estado === EstadoCelula_1.ESTADO_CELULA.MUERTA) {
                         return "#09C";
+                    }
+                    if (estado === EstadoCelula_1.ESTADO_CELULA.SELECCIONADA) {
+                        return "#FF0";
                     }
                     var cadena = Math.floor(celula.getColonia()).toString(16);
                     cadena = UniversoComponent.formatearCadena(cadena);
