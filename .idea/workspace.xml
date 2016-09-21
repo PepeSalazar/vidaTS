@@ -2,19 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c7d89fd5-b4c0-4be5-8c31-0771eab3d9c9" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/controles/controles.component.html" afterPath="$PROJECT_DIR$/app/componentes/controles/controles.component.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/controles/controles.component.ts" afterPath="$PROJECT_DIR$/app/componentes/controles/controles.component.ts" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/main/app.component.html" afterPath="$PROJECT_DIR$/app/componentes/main/app.component.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/main/app.component.js" afterPath="$PROJECT_DIR$/app/componentes/main/app.component.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/main/app.component.js.map" afterPath="$PROJECT_DIR$/app/componentes/main/app.component.js.map" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/main/app.component.ts" afterPath="$PROJECT_DIR$/app/componentes/main/app.component.ts" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/universo/universo.component.html" afterPath="$PROJECT_DIR$/app/componentes/universo/universo.component.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/universo/universo.component.js" afterPath="$PROJECT_DIR$/app/componentes/universo/universo.component.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/universo/universo.component.js.map" afterPath="$PROJECT_DIR$/app/componentes/universo/universo.component.js.map" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/universo/universo.component.ts" afterPath="$PROJECT_DIR$/app/componentes/universo/universo.component.ts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.module.js" afterPath="$PROJECT_DIR$/app/app.module.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.module.ts" afterPath="$PROJECT_DIR$/app/app.module.ts" />
     </list>
     <ignored path="vidaTS.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -528,7 +516,7 @@
       <workItem from="1474309790123" duration="11939000" />
       <workItem from="1474380660803" duration="23445000" />
       <workItem from="1474418608155" duration="1543000" />
-      <workItem from="1474473725157" duration="213000" />
+      <workItem from="1474473725157" duration="241000" />
     </task>
     <task id="LOCAL-00001" summary="Making the compiler run well">
       <created>1474310709755</created>
@@ -572,11 +560,18 @@
       <option name="project" value="LOCAL" />
       <updated>1474408882009</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Relocating folders">
+      <created>1474473959532</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1474473959532</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="60338000" />
+    <option name="totallyTimeSpent" value="60366000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1920" y="-157" width="1920" height="1053" extended-state="6" />
@@ -627,7 +622,8 @@
     <MESSAGE value="Stable. Colony detection is now working" />
     <MESSAGE value="Adding intercomponent connecting!!!" />
     <MESSAGE value="Controles are working." />
-    <option name="LAST_COMMIT_MESSAGE" value="Controles are working." />
+    <MESSAGE value="Relocating folders" />
+    <option name="LAST_COMMIT_MESSAGE" value="Relocating folders" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
