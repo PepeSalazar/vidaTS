@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../modelos/Mapa", "../modelos/EstadoCelula"], function(exports_1, context_1) {
+System.register(["@angular/core", "../../modelos/Mapa", "../../modelos/EstadoCelula"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -173,7 +173,7 @@ System.register(["@angular/core", "../modelos/Mapa", "../modelos/EstadoCelula"],
                 UniversoComponent = __decorate([
                     core_1.Component({
                         selector: "universo",
-                        templateUrl: "app/universo/universo.component.html"
+                        templateUrl: "app/componentes/universo/universo.component.html"
                     }), 
                     __metadata('design:paramtypes', [])
                 ], UniversoComponent);
