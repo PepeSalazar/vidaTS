@@ -48,7 +48,7 @@ System.register(["@angular/core"], function(exports_1, context_1) {
                 ControlesComponent = __decorate([
                     core_1.Component({
                         selector: "controles",
-                        templateUrl: "app/componentes/controles/controles.component.html"
+                        templateUrl: "app/scripts/componentes/controles/controles.component.html"
                     }), 
                     __metadata('design:paramtypes', [])
                 ], ControlesComponent);

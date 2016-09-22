@@ -173,7 +173,7 @@ System.register(["@angular/core", "../../modelos/Mapa", "../../modelos/EstadoCel
                 UniversoComponent = __decorate([
                     core_1.Component({
                         selector: "universo",
-                        templateUrl: "app/componentes/universo/universo.component.html"
+                        templateUrl: "app/scripts/componentes/universo/universo.component.html"
                     }), 
                     __metadata('design:paramtypes', [])
                 ], UniversoComponent);
