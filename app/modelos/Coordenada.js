@@ -14,17 +14,14 @@ System.register([], function(exports_1, context_1) {
                     this.x = x;
                     this.y = y;
                 }
-                Coordenada.prototype.isEqual = function (otra) {
+                Coordenada.prototype.esIgual = function (otra) {
                     if (!otra) {
                         return false;
                     }
                     if (otra.x !== this.x) {
                         return false;
                     }
-                    if (otra.y !== this.y) {
-                        return false;
-                    }
-                    return true;
+                    return otra.y === this.y;
                 };
                 return Coordenada;
             }());

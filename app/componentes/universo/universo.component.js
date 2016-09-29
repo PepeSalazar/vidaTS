@@ -25,10 +25,9 @@ System.register(["@angular/core", "../../modelos/Mapa", "../../modelos/EstadoCel
             }],
         execute: function() {
             UniversoComponent = (function () {
-                // constructor(private renglones : number, private columnas : number, private tamCelulas : number, private espacioCelular : number, private porcentajeVida : number){
                 function UniversoComponent() {
-                    this.cantidadGeneraciones = 0;
                     this.cantidadColonias = 0;
+                    this.generaciones = 0;
                     this.renglones = 200;
                     this.columnas = 200;
                     this.tamCelulas = 4;
@@ -78,7 +77,7 @@ System.register(["@angular/core", "../../modelos/Mapa", "../../modelos/EstadoCel
                     }
                     UniversoComponent.asignarColonia(celula, padre);
                     vecinas = self.mapa.obtenerCelulasVecinas(celula);
-                    vecinas.forEach(function (vecina, index, array) {
+                    vecinas.forEach(function (vecina) {
                         var esValida = Mapa_1.Mapa.esCelulaVecinaValida(vecina, padre);
                         if (esValida) {
                             self.detectarColonia(vecina, celula);

@@ -12,10 +12,9 @@ import {ESTADO_CELULA} from "../../modelos/EstadoCelula";
 export class UniversoComponent implements AfterViewInit {
 
   private mapa : Mapa;
-  private cantidadGeneraciones : number = 0;
-  private cantidadColonias : number     = 0;
+  private cantidadColonias : number = 0;
   private contexto : CanvasRenderingContext2D;
-  private generaciones : number;
+  private generaciones : number     = 0;
 
   private renglones : number      = 200;
   private columnas : number       = 200;
@@ -23,7 +22,6 @@ export class UniversoComponent implements AfterViewInit {
   private espacioCelular : number = 0;
   private porcentajeVida : number = 0.4;
 
-  // constructor(private renglones : number, private columnas : number, private tamCelulas : number, private espacioCelular : number, private porcentajeVida : number){
   constructor(){
     this.mapa = new Mapa(this.renglones, this.columnas, this.tamCelulas, this.porcentajeVida);
     console.log("This mapa is: ", this.renglones, this.columnas);
@@ -75,7 +73,7 @@ export class UniversoComponent implements AfterViewInit {
 
     UniversoComponent.asignarColonia(celula, padre);
     vecinas = self.mapa.obtenerCelulasVecinas(celula);
-    vecinas.forEach(function (vecina, index, array){
+    vecinas.forEach(function (vecina){
       let esValida = Mapa.esCelulaVecinaValida(vecina, padre);
       if(esValida){
         self.detectarColonia(vecina, celula);

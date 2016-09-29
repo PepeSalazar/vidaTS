@@ -40,10 +40,9 @@ export class Celula {
     this.coordenada = value;
   }
 
-  public isEqual(otra : Celula) : boolean{
+  public esIgual(otra : Celula) : boolean{
     if(!otra){ return false; }
-    if(!otra.getCoordenada().isEqual(this.getCoordenada())){ return false; }
-    return true;
+    return otra.getCoordenada().esIgual(this.getCoordenada());
   }
 
   public setFantasma(fantasma : ESTADO_CELULA){
@@ -56,18 +55,19 @@ export class Celula {
 
   public calcularEstado(vecinosVivos : number) : ESTADO_CELULA{
     let nuevoEstado = ESTADO_CELULA.MUERTA;
-    let b = 3;//3
-    let s = [2, 3];//2,3
-    if (vecinosVivos < s[0] && this.estado === ESTADO_CELULA.VIVA) {
+    let b           = 3;//3
+    let s           = [2, 3];//2,3
+    
+    if(vecinosVivos < s[0] && this.estado === ESTADO_CELULA.VIVA){
       nuevoEstado = ESTADO_CELULA.MUERTA; // Muere de soledad
     }
-    if ((vecinosVivos === s[0] || vecinosVivos === s[1]) && this.estado === ESTADO_CELULA.VIVA) {
+    if((vecinosVivos === s[0] || vecinosVivos === s[1]) && this.estado === ESTADO_CELULA.VIVA){
       nuevoEstado = ESTADO_CELULA.VIVA; // Se queda viva
     }
-    if (vecinosVivos > s[1] && this.estado === ESTADO_CELULA.VIVA) {
+    if(vecinosVivos > s[1] && this.estado === ESTADO_CELULA.VIVA){
       nuevoEstado = ESTADO_CELULA.MUERTA; // Se muere por sobrepoblación
     }
-    if (vecinosVivos === b && this.estado === ESTADO_CELULA.MUERTA) {
+    if(vecinosVivos === b && this.estado === ESTADO_CELULA.MUERTA){
       nuevoEstado = ESTADO_CELULA.VIVA; //Revive por reproducción
     }
 

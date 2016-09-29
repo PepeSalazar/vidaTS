@@ -34,8 +34,7 @@ System.register(["./Celula", "./Coordenada", "./EstadoCelula"], function(exports
                         this.celulas[x] = new Array(this.columnas);
                         for (var y = 0; y < this.columnas; y++) {
                             var identificador = ((x * this.columnas) + y);
-                            var celula = new Celula_1.Celula(identificador, new Coordenada_1.Coordenada(x, y), EstadoCelula_1.ESTADO_CELULA.MUERTA, -1);
-                            this.celulas[x][y] = celula;
+                            this.celulas[x][y] = new Celula_1.Celula(identificador, new Coordenada_1.Coordenada(x, y), EstadoCelula_1.ESTADO_CELULA.MUERTA, -1);
                         }
                     }
                 }
@@ -62,7 +61,7 @@ System.register(["./Celula", "./Coordenada", "./EstadoCelula"], function(exports
                 };
                 //Si es célula vecina válida y viva, y no su padre.
                 Mapa.esCelulaVecinaValida = function (celula, padre) {
-                    return (celula.getId() !== -1 && celula.getEstado() === EstadoCelula_1.ESTADO_CELULA.VIVA && !celula.isEqual(padre));
+                    return (celula.getId() !== -1 && celula.getEstado() === EstadoCelula_1.ESTADO_CELULA.VIVA && !celula.esIgual(padre));
                 };
                 Mapa.prototype.obtenerCelulasVecinas = function (celula) {
                     var vecinos = [];
@@ -80,7 +79,7 @@ System.register(["./Celula", "./Coordenada", "./EstadoCelula"], function(exports
                 Mapa.prototype.ContarVecinosVivos = function (celula) {
                     var contadorVecinos = 0;
                     var vecinos = this.obtenerCelulasVecinas(celula);
-                    vecinos.forEach(function (vecino, index, vecinos) {
+                    vecinos.forEach(function (vecino) {
                         if (vecino.getId() !== -1 && vecino.getEstado() === EstadoCelula_1.ESTADO_CELULA.VIVA) {
                             contadorVecinos++;
                         }

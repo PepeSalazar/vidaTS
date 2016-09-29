@@ -20,8 +20,7 @@ export class Mapa {
       this.celulas[x] = new Array(this.columnas);
       for (let y : number = 0; y < this.columnas; y++){
         let identificador  = ((x * this.columnas) + y);
-        let celula         = new Celula(identificador, new Coordenada(x, y), ESTADO_CELULA.MUERTA, -1);
-        this.celulas[x][y] = celula;
+        this.celulas[x][y] = new Celula(identificador, new Coordenada(x, y), ESTADO_CELULA.MUERTA, -1);
       }
     }
   }
@@ -51,7 +50,7 @@ export class Mapa {
 
   //Si es célula vecina válida y viva, y no su padre.
   static esCelulaVecinaValida(celula : Celula, padre : Celula){
-    return (celula.getId() !== -1 && celula.getEstado() === ESTADO_CELULA.VIVA && !celula.isEqual(padre));
+    return (celula.getId() !== -1 && celula.getEstado() === ESTADO_CELULA.VIVA && !celula.esIgual(padre));
   }
 
   obtenerCelulasVecinas(celula : Celula){
@@ -71,7 +70,7 @@ export class Mapa {
   ContarVecinosVivos(celula : Celula) : number{
     let contadorVecinos : number = 0;
     let vecinos : Celula[]       = this.obtenerCelulasVecinas(celula);
-    vecinos.forEach((vecino, index, vecinos)=>{
+    vecinos.forEach((vecino)=>{
       if(vecino.getId() !== -1 && vecino.getEstado() === ESTADO_CELULA.VIVA){
         contadorVecinos++;
       }

@@ -4,10 +4,9 @@ export class Coordenada {
     this.y = y;
   }
 
-  isEqual(otra : Coordenada) : boolean{
+  esIgual(otra : Coordenada) : boolean{
     if(!otra){ return false; }
     if(otra.x !== this.x){ return false; }
-    if(otra.y !== this.y){ return false; }
-    return true;
+    return otra.y === this.y;
   }
 }

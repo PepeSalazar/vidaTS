@@ -48,14 +48,11 @@ System.register(["./Coordenada", "./EstadoCelula"], function(exports_1, context_
                 Celula.prototype.setCoordenada = function (value) {
                     this.coordenada = value;
                 };
-                Celula.prototype.isEqual = function (otra) {
+                Celula.prototype.esIgual = function (otra) {
                     if (!otra) {
                         return false;
                     }
-                    if (!otra.getCoordenada().isEqual(this.getCoordenada())) {
-                        return false;
-                    }
-                    return true;
+                    return otra.getCoordenada().esIgual(this.getCoordenada());
                 };
                 Celula.prototype.setFantasma = function (fantasma) {
                     this.fantasma = fantasma;
