@@ -3,6 +3,7 @@ import {Component, ViewChild, AfterViewInit} from "@angular/core";
 import {Mapa} from "../../modelos/Mapa";
 import {Celula} from "../../modelos/Celula";
 import {ESTADO_CELULA} from "../../modelos/EstadoCelula";
+import {Lib} from "../lib/lib";
 
 @Component({
   selector    : "universo",
@@ -35,7 +36,7 @@ export class UniversoComponent implements AfterViewInit {
     canvas.height                  = this.renglones * this.tamCelulas;
     this.contexto                  = canvas.getContext("2d");
     this.generarVida();
-    this.tick();
+    Lib.asyncMe(this.tick, this);
   }
 
   exterminarVida() : void{

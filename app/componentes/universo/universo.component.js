@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../modelos/Mapa", "../../modelos/EstadoCelula"], function(exports_1, context_1) {
+System.register(["@angular/core", "../../modelos/Mapa", "../../modelos/EstadoCelula", "../lib/lib"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(["@angular/core", "../../modelos/Mapa", "../../modelos/EstadoCel
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, Mapa_1, EstadoCelula_1;
+    var core_1, Mapa_1, EstadoCelula_1, lib_1;
     var UniversoComponent;
     return {
         setters:[
@@ -22,6 +22,9 @@ System.register(["@angular/core", "../../modelos/Mapa", "../../modelos/EstadoCel
             },
             function (EstadoCelula_1_1) {
                 EstadoCelula_1 = EstadoCelula_1_1;
+            },
+            function (lib_1_1) {
+                lib_1 = lib_1_1;
             }],
         execute: function() {
             UniversoComponent = (function () {
@@ -42,7 +45,7 @@ System.register(["@angular/core", "../../modelos/Mapa", "../../modelos/EstadoCel
                     canvas.height = this.renglones * this.tamCelulas;
                     this.contexto = canvas.getContext("2d");
                     this.generarVida();
-                    this.tick();
+                    lib_1.Lib.asyncMe(this.tick, this);
                 };
                 UniversoComponent.prototype.exterminarVida = function () {
                     this.mapa.recorrer(function (celula) {
