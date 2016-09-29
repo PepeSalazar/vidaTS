@@ -2,9 +2,9 @@ import {NgModule}      from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule}   from '@angular/forms';
 
-import {AppComponent}  from './scripts/componentes/main/app.component';
-import {UniversoComponent}  from './scripts/componentes/universo/universo.component';
-import {ControlesComponent} from './scripts/componentes/controles/controles.component'
+import {AppComponent}  from './componentes/main/app.component';
+import {UniversoComponent}  from './componentes/universo/universo.component';
+import {ControlesComponent} from './componentes/controles/controles.component'
 
 @NgModule({
   imports      : [

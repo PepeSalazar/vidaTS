@@ -2,7 +2,7 @@ import {Component, EventEmitter, Output} from "@angular/core";
 
 @Component({
   selector    : "controles",
-  templateUrl : "app/scripts/componentes/controles/controles.component.html"
+  templateUrl : "app/componentes/controles/controles.component.html"
 })
 
 export class ControlesComponent {
