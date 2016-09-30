@@ -19,12 +19,12 @@ export class UniversoComponent implements AfterViewInit {
 
   private renglones : number      = 200;
   private columnas : number       = 200;
-  private tamCelulas : number     = 4;
+  private tamanoCelula : number   = 4;
   private espacioCelular : number = 0;
   private porcentajeVida : number = 0.4;
 
   constructor(){
-    this.mapa = new Mapa(this.renglones, this.columnas, this.tamCelulas, this.porcentajeVida);
+    this.mapa = new Mapa(this.renglones, this.columnas, this.tamanoCelula, this.porcentajeVida, this.espacioCelular);
     console.log("This mapa is: ", this.renglones, this.columnas);
   }
 
@@ -32,8 +32,8 @@ export class UniversoComponent implements AfterViewInit {
 
   ngAfterViewInit() : void{
     let canvas : HTMLCanvasElement = this.universo.nativeElement;
-    canvas.width                   = this.columnas * this.tamCelulas;
-    canvas.height                  = this.renglones * this.tamCelulas;
+    canvas.width                   = this.columnas * this.tamanoCelula;
+    canvas.height                  = this.renglones * this.tamanoCelula;
     this.contexto                  = canvas.getContext("2d");
     this.generarVida();
     Lib.asyncMe(this.tick, this);
@@ -48,7 +48,7 @@ export class UniversoComponent implements AfterViewInit {
   generarVida() : void{
     this.mapa.recorrer(function (celula : Celula){
       let estado = ESTADO_CELULA.VIVA;
-      if(UniversoComponent.generarNumeroRandom(0, 1) === 0){
+      if(Lib.generarNumeroRandom(0, 1) === 0){
         estado = ESTADO_CELULA.MUERTA;
       }
       celula.setEstado(estado);
@@ -83,57 +83,10 @@ export class UniversoComponent implements AfterViewInit {
 
   }
 
-  static generarNumeroRandom(min : number, max : number) : number{
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-
-  pintarCambios() : void{
+  pintar() : void{
     this.mapa.recorrer((celula : Celula) =>{
-      this.pintarCelula(celula);
+      celula.pintar(this.contexto);
     })
-  }
-
-  pintarCelula(celula : Celula) : void{
-    let x : number            = celula.getCoordenada().x * this.tamCelulas;//Calcula la posición de la célula en el canvas.
-    let y : number            = celula.getCoordenada().y * this.tamCelulas;
-    let celulaWidth : number  = this.tamCelulas - this.espacioCelular;
-    let celulaHeight : number = this.tamCelulas - this.espacioCelular;
-
-    this.contexto.fillStyle = this.seleccionarColor(celula);
-    this.contexto.fillRect(x, y, celulaWidth, celulaHeight);
-
-    // this.contexto.fillStyle = "#000";
-    // this.contexto.font      = "10px Arial";
-    // this.contexto.fillText(celula.getId().toString(), (x + this.tamCelulas / 2), (y + this.tamCelulas / 2));
-  }
-
-  seleccionarColor(celula : Celula) : string{
-    let estado = celula.getEstado();
-
-    if(estado === ESTADO_CELULA.MUERTA){ return "#09C"; }
-    if(estado === ESTADO_CELULA.SELECCIONADA){ return "#FF0"; }
-
-    let cadena : string = Math.floor(celula.getColonia()).toString(16);
-    cadena              = UniversoComponent.formatearCadena(cadena);
-    if(cadena !== "00"){
-      cadena = "#00CC" + cadena;
-    } else {
-      cadena = "#00CCFF";
-    }
-    return cadena;
-  }
-
-  /**
-   * Verifica que la cadena tenga al menos dos caracteres.
-   * @param cadena
-   * @returns {string}
-   */
-  static formatearCadena(cadena : string) : string{
-    let cadenaFormateada = cadena;
-    if(cadena.length < 2){
-      cadenaFormateada = "0" + cadena;
-    }
-    return cadenaFormateada;
   }
 
   tick() : void{
@@ -148,7 +101,7 @@ export class UniversoComponent implements AfterViewInit {
     });
     this.mapa.recorrer(this.detectarColonia.bind(this));
     this.generaciones = this.generaciones + 1;
-    this.pintarCambios();
+    this.pintar();
   }
 
   controlesHandler($event){

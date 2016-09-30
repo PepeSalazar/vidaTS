@@ -8,11 +8,13 @@ export class Mapa {
   constructor(private renglones : number = 20,
               private columnas : number = 20,
               private tamanoCelula : number = 4,
-              private porcentajeVida : number = 0.4){
+              private porcentajeVida : number = 0.4,
+              private espacioCelular : number = 0){
     this.renglones      = renglones;
     this.columnas       = columnas;
     this.tamanoCelula   = tamanoCelula;
     this.porcentajeVida = porcentajeVida;
+    this.espacioCelular = espacioCelular;
 
     this.celulas = new Array(this.renglones);
 
@@ -20,7 +22,7 @@ export class Mapa {
       this.celulas[x] = new Array(this.columnas);
       for (let y : number = 0; y < this.columnas; y++){
         let identificador  = ((x * this.columnas) + y);
-        this.celulas[x][y] = new Celula(identificador, new Coordenada(x, y), ESTADO_CELULA.MUERTA, -1);
+        this.celulas[x][y] = new Celula(identificador, new Coordenada(x, y), ESTADO_CELULA.MUERTA, -1, this.tamanoCelula, this.espacioCelular);
       }
     }
   }
