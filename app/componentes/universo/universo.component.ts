@@ -8,7 +8,7 @@ import {Lib} from "../../lib/lib";
   templateUrl : "app/componentes/universo/universo.component.html"
 })
 
-export class UniversoComponent implements AfterViewInit {
+export class UniversoComponent implements AfterViewInit, Pintable {
 
   private mapa : Mapa;
   private cantidadColonias : number = 0;

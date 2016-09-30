@@ -3,7 +3,7 @@ import {Coordenada} from "./Coordenada"
 import {ESTADO_CELULA} from "./EstadoCelula"
 import {Lib} from "../lib/lib";
 
-export class Mapa {
+export class Mapa implements Pintable{
   private celulas : Celula[][];
 
   constructor(private renglones : number = 20,
