@@ -15,14 +15,14 @@ export class ControlesComponent {
   }
 
   play(){
-    window.clearInterval(this.funcionTiempo);//Se detiene cualquier otro ciclo anterior.
+    this.pause();
     this.funcionTiempo = window.setInterval(()=>{
       this.controlesEvent.emit("tick")
-    }, 1);//El tiempo se echa a andar.
+    }, 1);
   }
 
   pause(){
-    // this.controlesEvent.emit("pause");
+    window.clearInterval(this.funcionTiempo);
   }
 
   reset(){
