@@ -55,34 +55,6 @@ export class UniversoComponent implements AfterViewInit {
     });
   }
 
-  static asignarColonia(celula : Celula, padre : Celula) : void{
-    if(padre){
-      celula.setColonia(padre.getColonia());
-      return;
-    }
-    let colonia = Math.floor(Math.random() * (255));
-    celula.setColonia(colonia);
-  }
-
-  detectarColonia(celula : Celula, padre : Celula) : void{
-    let self = this;
-    let vecinas : Celula[];
-    if(celula.getColonia() !== -1){ return; }
-    if(celula.getEstado() === ESTADO_CELULA.MUERTA){
-      return;
-    }
-
-    UniversoComponent.asignarColonia(celula, padre);
-    vecinas = self.mapa.obtenerCelulasVecinas(celula);
-    vecinas.forEach(function (vecina){
-      let esValida = Mapa.esCelulaVecinaValida(vecina, padre);
-      if(esValida){
-        self.detectarColonia(vecina, celula);
-      }
-    });
-
-  }
-
   pintar() : void{
     this.mapa.recorrer((celula : Celula) =>{
       celula.pintar(this.contexto);
@@ -99,7 +71,7 @@ export class UniversoComponent implements AfterViewInit {
     this.mapa.recorrer(function (celula : Celula){
       celula.desfasar();
     });
-    this.mapa.recorrer(this.detectarColonia.bind(this));
+    this.mapa.recorrer(this.mapa.detectarColonia.bind(this.mapa));
     this.generaciones = this.generaciones + 1;
     this.pintar();
   }
