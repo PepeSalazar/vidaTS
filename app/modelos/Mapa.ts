@@ -1,6 +1,7 @@
 import {Celula} from "./Celula"
 import {Coordenada} from "./Coordenada"
 import {ESTADO_CELULA} from "./EstadoCelula"
+import {Lib} from "../lib/lib";
 
 export class Mapa {
   private celulas : Celula[][];
@@ -89,6 +90,10 @@ export class Mapa {
     celula.setColonia(colonia);
   }
 
+  public detectarColonias(){
+    this.recorrer(this.detectarColonia.bind(this));
+  }
+
   detectarColonia(celula : Celula, padre : Celula) : void{
     let self = this;
     let vecinas : Celula[];
@@ -105,6 +110,41 @@ export class Mapa {
         self.detectarColonia(vecina, celula);
       }
     });
+  }
 
+  public exterminarVida() : void{
+    this.recorrer((celula : Celula) =>{
+      celula.setEstado(ESTADO_CELULA.MUERTA);
+    });
+  }
+
+  public generarVida() : void{
+    this.recorrer(function (celula : Celula){
+      let estado = ESTADO_CELULA.VIVA;
+      if(Lib.generarNumeroRandom(0, 1) === 0){
+        estado = ESTADO_CELULA.MUERTA;
+      }
+      celula.setEstado(estado);
+    });
+  }
+
+  public reiniciarColonia(){
+    this.recorrer((celula : Celula)=>{
+      let vecinos = this.ContarVecinosVivos(celula);
+      celula.setFantasma(celula.calcularEstado(vecinos));
+      celula.setColonia(-1); // Reinica la colonia
+    })
+  }
+
+  public desfasarColonia(){
+    this.recorrer((celula : Celula)=>{
+      celula.desfasar();
+    })
+  }
+
+  public pintar(contexto : CanvasRenderingContext2D) : void{
+    this.recorrer((celula : Celula) =>{
+      celula.pintar(contexto);
+    })
   }
 }

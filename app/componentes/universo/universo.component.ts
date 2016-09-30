@@ -1,8 +1,6 @@
 import {Component, ViewChild, AfterViewInit} from "@angular/core";
 
 import {Mapa} from "../../modelos/Mapa";
-import {Celula} from "../../modelos/Celula";
-import {ESTADO_CELULA} from "../../modelos/EstadoCelula";
 import {Lib} from "../../lib/lib";
 
 @Component({
@@ -35,43 +33,20 @@ export class UniversoComponent implements AfterViewInit {
     canvas.width                   = this.columnas * this.tamanoCelula;
     canvas.height                  = this.renglones * this.tamanoCelula;
     this.contexto                  = canvas.getContext("2d");
-    this.generarVida();
+    this.mapa.generarVida();
     Lib.asyncMe(this.tick, this);
   }
 
-  exterminarVida() : void{
-    this.mapa.recorrer((celula : Celula) =>{
-      celula.setEstado(ESTADO_CELULA.MUERTA);
-    });
-  }
-
-  generarVida() : void{
-    this.mapa.recorrer(function (celula : Celula){
-      let estado = ESTADO_CELULA.VIVA;
-      if(Lib.generarNumeroRandom(0, 1) === 0){
-        estado = ESTADO_CELULA.MUERTA;
-      }
-      celula.setEstado(estado);
-    });
-  }
-
   pintar() : void{
-    this.mapa.recorrer((celula : Celula) =>{
-      celula.pintar(this.contexto);
-    })
+    this.mapa.pintar(this.contexto);
   }
 
   tick() : void{
     this.cantidadColonias = 0;
-    this.mapa.recorrer((celula : Celula)=>{
-      let vecinos = this.mapa.ContarVecinosVivos(celula);
-      celula.setFantasma(celula.calcularEstado(vecinos));
-      celula.setColonia(-1); // Reinica la colonia
-    });
-    this.mapa.recorrer(function (celula : Celula){
-      celula.desfasar();
-    });
-    this.mapa.recorrer(this.mapa.detectarColonia.bind(this.mapa));
+    this.mapa.reiniciarColonia();
+    this.mapa.desfasarColonia();
+    // this.mapa.recorrer(this.mapa.detectarColonia.bind(this.mapa));
+    this.mapa.detectarColonias();
     this.generaciones = this.generaciones + 1;
     this.pintar();
   }
@@ -85,8 +60,8 @@ export class UniversoComponent implements AfterViewInit {
         self.tick();
         break;
       case "exterminio" :
-        this.exterminarVida();
-        this.generarVida();
+        this.mapa.exterminarVida();
+        this.mapa.generarVida();
         this.tick();
         break;
       default :
