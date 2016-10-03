@@ -22,7 +22,16 @@ export class UniversoComponent implements AfterViewInit, Pintable {
   private porcentajeVida : number = 0.4;
 
   constructor(){
-    this.mapa = new Mapa(this.renglones, this.columnas, this.tamanoCelula, this.porcentajeVida, this.espacioCelular);
+    this.generarMapa(this.renglones, this.columnas, this.tamanoCelula, this.porcentajeVida, this.espacioCelular);
+  }
+
+  generarMapa(renglones, columnas, tamanoCelula, porcentajeVida, espacioCelular){
+    this.renglones      = renglones;
+    this.columnas       = columnas;
+    this.tamanoCelula   = tamanoCelula;
+    this.porcentajeVida = porcentajeVida;
+    this.espacioCelular = espacioCelular;
+    this.mapa           = new Mapa(renglones, columnas, tamanoCelula, porcentajeVida, espacioCelular);
     console.log("This mapa is: ", this.renglones, this.columnas);
   }
 
@@ -61,6 +70,7 @@ export class UniversoComponent implements AfterViewInit, Pintable {
         break;
       case "exterminio" :
         this.mapa.exterminarVida();
+        // this.generarMapa();
         this.mapa.generarVida();
         this.tick();
         break;
